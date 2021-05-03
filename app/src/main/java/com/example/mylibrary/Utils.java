@@ -12,15 +12,19 @@ import java.util.ArrayList;
 public class Utils {
 
     private static final String ALL_BOOKS_KEY = "all_books";
+    private static final String ALREADY_READ_BOOKS = "already_read_books";
+    private static final String WANT_TO_READ_BOOKS = "want_to_read_books";
+    private static final String CURRENTLY_READING_BOOKS = "currently_reading_books";
+    private static final String FAVORITE_BOOKS = "favorite_books";
 
     private static Utils instance;
     private SharedPreferences sharedPreferences;
 
-    private static ArrayList<Book> allBooks;
-    private static ArrayList<Book> alreadyReadBooks;
-    private static ArrayList<Book> wantToReadBooks;
-    private static ArrayList<Book> currentlyReadingBooks;
-    private static ArrayList<Book> favoriteBooks;
+//    private static ArrayList<Book> allBooks;
+//    private static ArrayList<Book> alreadyReadBooks;
+//    private static ArrayList<Book> wantToReadBooks;
+//    private static ArrayList<Book> currentlyReadingBooks;
+//    private static ArrayList<Book> favoriteBooks;
 
     private Utils(Context context) {
 
@@ -31,20 +35,27 @@ public class Utils {
             initData();
         }
 
-        if (alreadyReadBooks == null) {
-            alreadyReadBooks = new ArrayList<>();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+
+        if (getAlreadyReadBooks() == null) {
+            editor.putString(ALREADY_READ_BOOKS, gson.toJson(new ArrayList<Book>()));
+            editor.commit();
         }
 
-        if (wantToReadBooks == null) {
-            wantToReadBooks = new ArrayList<>();
+        if (getWantToReadBooks() == null) {
+            editor.putString(WANT_TO_READ_BOOKS, gson.toJson(new ArrayList<Book>()));
+            editor.commit();
         }
 
-        if (currentlyReadingBooks == null) {
-            currentlyReadingBooks = new ArrayList<>();
+        if (getCurrentlyReadingBooks() == null) {
+            editor.putString(CURRENTLY_READING_BOOKS, gson.toJson(new ArrayList<Book>()));
+            editor.commit();
         }
 
-        if (favoriteBooks == null) {
-            favoriteBooks = new ArrayList<>();
+        if (getFavoriteBooks() == null) {
+            editor.putString(FAVORITE_BOOKS, gson.toJson(new ArrayList<Book>()));
+            editor.commit();
         }
     }
 
@@ -85,64 +96,192 @@ public class Utils {
     public ArrayList<Book> getAllBooks() {
         Gson gson = new Gson();
         Type type = new TypeToken<ArrayList<Book>>(){}.getType();
-        ArrayList<Book> books = gson.fromJson(sharedPreferences.getString(ALL_BOOKS_KEY, null), type)
+        ArrayList<Book> books = gson.fromJson(sharedPreferences.getString(ALL_BOOKS_KEY, null), type);
         return books;
     }
 
-    public static ArrayList<Book> getAlreadyReadBooks() {
-        return alreadyReadBooks;
+    public ArrayList<Book> getAlreadyReadBooks() {
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<Book>>(){}.getType();
+        ArrayList<Book> books = gson.fromJson(sharedPreferences.getString(ALREADY_READ_BOOKS, null), type);
+        return books;
     }
 
-    public static ArrayList<Book> getWantToReadBooks() {
-        return wantToReadBooks;
+    public ArrayList<Book> getWantToReadBooks() {
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<Book>>(){}.getType();
+        ArrayList<Book> books = gson.fromJson(sharedPreferences.getString(WANT_TO_READ_BOOKS, null), type);
+        return books;
     }
 
-    public static ArrayList<Book> getCurrentlyReadingBooks() {
-        return currentlyReadingBooks;
+    public ArrayList<Book> getCurrentlyReadingBooks() {
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<Book>>(){}.getType();
+        ArrayList<Book> books = gson.fromJson(sharedPreferences.getString(CURRENTLY_READING_BOOKS, null), type);
+        return books;
     }
 
-    public static ArrayList<Book> getFavoriteBooks() {
-        return favoriteBooks;
+    public ArrayList<Book> getFavoriteBooks() {
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<Book>>(){}.getType();
+        ArrayList<Book> books = gson.fromJson(sharedPreferences.getString(FAVORITE_BOOKS, null), type);
+        return books;
     }
 
     public Book getBookById(int id) {
-        for (Book b: allBooks) {
-            if (b.getId() == id) {
-                return b;
+        ArrayList<Book> books = getAllBooks();
+        if (books != null) {
+            for (Book b: books) {
+                if (b.getId() == id) {
+                    return b;
+                }
             }
         }
+
         return null;
     }
 
+//    public boolean handleAdding(String key) {
+//
+//    }
+
     public boolean addToAlreadyRead(Book book) {
-        return alreadyReadBooks.add(book);
+        ArrayList<Book> books = getAlreadyReadBooks();
+        if (book != null) {
+            if (books.add(book)) {
+                Gson gson = new Gson();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.remove(ALREADY_READ_BOOKS);
+                editor.putString(ALREADY_READ_BOOKS, gson.toJson(books));
+                editor.commit();
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean addToWantToRead (Book book) {
-        return wantToReadBooks.add(book);
+        ArrayList<Book> books = getWantToReadBooks();
+        if (book != null) {
+            if (books.add(book)) {
+                Gson gson = new Gson();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.remove(WANT_TO_READ_BOOKS);
+                editor.putString(WANT_TO_READ_BOOKS, gson.toJson(books));
+                editor.commit();
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean addToFavorites(Book book) {
-        return favoriteBooks.add(book);
+        ArrayList<Book> books = getFavoriteBooks();
+        if (book != null) {
+            if (books.add(book)) {
+                Gson gson = new Gson();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.remove(FAVORITE_BOOKS);
+                editor.putString(FAVORITE_BOOKS, gson.toJson(books));
+                editor.commit();
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean addToCurrentlyReading(Book book) {
-        return currentlyReadingBooks.add(book);
+        ArrayList<Book> books = getCurrentlyReadingBooks();
+        if (book != null) {
+            if (books.add(book)) {
+                Gson gson = new Gson();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.remove(CURRENTLY_READING_BOOKS);
+                editor.putString(CURRENTLY_READING_BOOKS, gson.toJson(books));
+                editor.commit();
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean removeFromAlreadyRead(Book book) {
-        return alreadyReadBooks.remove(book);
+        ArrayList<Book> books = getAlreadyReadBooks();
+        if (books != null) {
+            for (Book b: books) {
+                if (b.getId() == book.getId()) {
+                    if (books.remove(b)) {
+                        Gson gson = new Gson();
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.remove(ALREADY_READ_BOOKS);
+                        editor.putString(ALREADY_READ_BOOKS, gson.toJson(books));
+                        editor.commit();
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     public boolean removefromWantToRead(Book book) {
-        return wantToReadBooks.remove(book);
+        ArrayList<Book> books = getWantToReadBooks();
+        if (books != null) {
+            for (Book b: books) {
+                if (b.getId() == book.getId()) {
+                    if (books.remove(b)) {
+                        Gson gson = new Gson();
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.remove(WANT_TO_READ_BOOKS);
+                        editor.putString(WANT_TO_READ_BOOKS, gson.toJson(books));
+                        editor.commit();
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     public boolean removeFromCurrentlyReading(Book book) {
-        return currentlyReadingBooks.remove(book);
+        ArrayList<Book> books = getCurrentlyReadingBooks();
+        if (books != null) {
+            for (Book b: books) {
+                if (b.getId() == book.getId()) {
+                    if (books.remove(b)) {
+                        Gson gson = new Gson();
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.remove(CURRENTLY_READING_BOOKS);
+                        editor.putString(CURRENTLY_READING_BOOKS, gson.toJson(books));
+                        editor.commit();
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     public boolean removeFromeFavorites(Book book) {
-        return favoriteBooks.remove(book);
+        ArrayList<Book> books = getFavoriteBooks();
+        if (books != null) {
+            for (Book b: books) {
+                if (b.getId() == book.getId()) {
+                    if (books.remove(b)) {
+                        Gson gson = new Gson();
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.remove(FAVORITE_BOOKS);
+                        editor.putString(FAVORITE_BOOKS, gson.toJson(books));
+                        editor.commit();
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }

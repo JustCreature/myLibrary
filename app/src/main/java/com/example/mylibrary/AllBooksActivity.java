@@ -32,7 +32,7 @@ public class AllBooksActivity extends AppCompatActivity {
         booksRecView.setLayoutManager(new LinearLayoutManager(this));
 
 
-        adapter.setBooks(Utils.getInstance().getAllBooks());
+        adapter.setBooks(Utils.getInstance(this).getAllBooks());
     }
 
     @Override
