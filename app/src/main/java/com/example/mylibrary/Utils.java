@@ -1,20 +1,10 @@
 package com.example.mylibrary;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class Utils {
 
-    private static final String ALL_BOOKS_KEY = "all_books";
-
     private static Utils instance;
-    private SharedPreferences sharedPreferences;
 
     private static ArrayList<Book> allBooks;
     private static ArrayList<Book> alreadyReadBooks;
@@ -22,12 +12,9 @@ public class Utils {
     private static ArrayList<Book> currentlyReadingBooks;
     private static ArrayList<Book> favoriteBooks;
 
-    private Utils(Context context) {
-
-        sharedPreferences = context.getSharedPreferences("alternate_db", Context.MODE_PRIVATE);
-
-        if (getAllBooks() == null) {
-//            allBooks = new ArrayList<>();
+    private Utils() {
+        if (allBooks == null) {
+            allBooks = new ArrayList<>();
             initData();
         }
 
@@ -50,43 +37,26 @@ public class Utils {
 
     private void initData() {
         //TODO: add initial data
-
-        ArrayList<Book> books = new ArrayList<>();
-        books.add(new Book(1, "1Q84", "Haruki Murakami", 1350,
+        allBooks.add(new Book(1, "1Q84", "Haruki Murakami", 1350,
                 "https://i.pinimg.com/originals/48/a5/cc/48a5ccbf33af206d5a4bf8271ba819e4.jpg",
                 "A work of maddening brilliance", "Long Description"));
-        books.add(new Book(2, "The Myth of Sisyphus", "Albert Camus", 250,
+        allBooks.add(new Book(2, "The Myth of Sisyphus", "Albert Camus", 250,
                 "https://upload.wikimedia.org/wikipedia/en/7/75/Le_Mythe_de_Sisyphe.jpg",
                 "Influenced by philosophers such as Søren Kierkegaard, Arthur Schopenhauer, and Friedrich Nietzsche, Camus introduces his philosophy of the absurd.",
                 "Long Description"));
-
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        editor.putString(ALL_BOOKS_KEY, gson.toJson(books));
-        editor.commit();
-//        allBooks.add(new Book(1, "1Q84", "Haruki Murakami", 1350,
-//                "https://i.pinimg.com/originals/48/a5/cc/48a5ccbf33af206d5a4bf8271ba819e4.jpg",
-//                "A work of maddening brilliance", "Long Description"));
-//        allBooks.add(new Book(2, "The Myth of Sisyphus", "Albert Camus", 250,
-//                "https://upload.wikimedia.org/wikipedia/en/7/75/Le_Mythe_de_Sisyphe.jpg",
-//                "Influenced by philosophers such as Søren Kierkegaard, Arthur Schopenhauer, and Friedrich Nietzsche, Camus introduces his philosophy of the absurd.",
-//                "Long Description"));
     }
 
-    public static Utils getInstance(Context context) {
+    public static Utils getInstance() {
         if (null != instance) {
             return instance;
         } else {
-            instance = new Utils(context);
+            instance = new Utils();
             return instance;
         }
     }
 
-    public ArrayList<Book> getAllBooks() {
-        Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<Book>>(){}.getType();
-        ArrayList<Book> books = gson.fromJson(sharedPreferences.getString(ALL_BOOKS_KEY, null), type)
-        return books;
+    public static ArrayList<Book> getAllBooks() {
+        return allBooks;
     }
 
     public static ArrayList<Book> getAlreadyReadBooks() {
