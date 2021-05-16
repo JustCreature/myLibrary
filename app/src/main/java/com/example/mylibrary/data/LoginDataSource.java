@@ -29,11 +29,13 @@ import java.util.Optional;
  */
 public class LoginDataSource {
 
+    LoggedInUser loggedInUser;
+
     public Result<LoggedInUser> login(Context postContext, String username, String password) {
 
         LoginPOST loginPOST = new LoginPOST(postContext);
         String response;
-        final LoggedInUser[] loggedInUser = new LoggedInUser[1];
+
 
         try {
             // TODO: handle loggedInUser authentication
@@ -52,20 +54,24 @@ public class LoginDataSource {
                 @Override
                 public void OnResponse(String userId, String userInfo) {
                     Toast.makeText(postContext, "Success " + userInfo, Toast.LENGTH_SHORT).show();
-                    loggedInUser[0] = new LoggedInUser(userId, userInfo);
+                    setUser(userId, userInfo);
                 }
             });
-            int i = 0;
-            while (loggedInUser[0] == null) {
-                i++;
-            }
+//            int i = 0;
+//            while (loggedInUser[0] == null) {
+//                i++;
+//            }
 
 
 
-            return new Result.Success<>(loggedInUser[0]);
+            return new Result.Success<>(loggedInUser);
         } catch (Exception e) {
             return new Result.Error(new IOException("Error logging in", e));
         }
+    }
+
+    public void setUser (String userId, String userInfo) {
+        loggedInUser = new LoggedInUser(userId, userInfo);
     }
 
     public void logout() {
