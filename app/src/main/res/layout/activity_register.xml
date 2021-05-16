@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity">
+
+    <EditText
+        android:id="@+id/et_firstName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="@string/first_name"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_regFormErr_firstName" />
+
+    <EditText
+        android:id="@+id/et_lastName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="@string/last_name"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_regFormErr_lastName" />
+
+    <EditText
+        android:id="@+id/et_regEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="@string/prompt_email"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_regFormErr_email" />
+
+    <EditText
+        android:id="@+id/et_regPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="@string/prompt_password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_regFormErr_password" />
+
+    <Button
+        android:id="@+id/btn_regRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/sign_up"
+        app:layout_constraintEnd_toEndOf="@+id/et_regRePassword"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="@+id/et_regRePassword"
+        app:layout_constraintTop_toBottomOf="@+id/et_regRePassword" />
+
+    <EditText
+        android:id="@+id/et_regRePassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="@string/rePassword"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/et_regPassword"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/et_regPassword"
+        app:layout_constraintTop_toBottomOf="@+id/tv_regFormErr_rePassword" />
+
+    <TextView
+        android:id="@+id/tv_regFormErr_firstName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/regFormError_firstName"
+        android:textColor="@color/regFormError"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/et_firstName"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_regFormErr_lastName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/regFormError_lastName"
+        android:textColor="@color/regFormError"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/et_lastName"
+        app:layout_constraintTop_toBottomOf="@+id/et_firstName" />
+
+    <TextView
+        android:id="@+id/tv_regFormErr_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/regFormError_email"
+        android:textColor="@color/regFormError"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/et_regEmail"
+        app:layout_constraintTop_toBottomOf="@+id/et_lastName" />
+
+    <TextView
+        android:id="@+id/tv_regFormErr_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/regFormError_password"
+        android:textColor="@color/regFormError"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/et_regPassword"
+        app:layout_constraintTop_toBottomOf="@+id/et_regEmail" />
+
+    <TextView
+        android:id="@+id/tv_regFormErr_rePassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/regFormError_rePassword"
+        android:textColor="@color/regFormError"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/et_regRePassword"
+        app:layout_constraintTop_toBottomOf="@+id/et_regPassword" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

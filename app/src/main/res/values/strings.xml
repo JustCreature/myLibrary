@@ -15,4 +15,17 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
+    <string name="rePassword">Retype Password</string>
+    <string name="regFormError_firstName">Invalid First Name</string>
+    <string name="regFormError_lastName">Invalid Last Name</string>
+    <string name="regFormError_email">Invalid Email</string>
+    <string name="regFormError_password">Password must be >5 characters</string>
+    <string name="regFormError_rePassword">Not match</string>
+
+    <string name="regFormValid">All Right</string>
+
 </resources>
