@@ -30,9 +30,29 @@ public class LoginViewModel extends ViewModel {
         return loginResult;
     }
 
-    public void login(Context postContext, String username, String password) {
+    public interface LoginListener {
+        void onError(String msg);
+
+        void onResponse(Result<LoggedInUser> result);
+    }
+
+    public void loginRequest(Context postContext, String username, String password, LoginListener loginListener) {
+//        Result<LoggedInUser> result = loginRepository.login(postContext, username, password);
+        loginRepository.loginRepPost(postContext, username, password, new LoginRepository.LoginRepListrner() {
+            @Override
+            public void onError(String msg) {
+
+            }
+
+            @Override
+            public void onResponse(Result<LoggedInUser> result) {
+                login(result);
+            }
+        });
+    }
+
+    public void login(Result<LoggedInUser> result) {
         // can be launched in a separate asynchronous job
-        Result<LoggedInUser> result = loginRepository.login(postContext, username, password);
 
         if (result instanceof Result.Success) {
             LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();

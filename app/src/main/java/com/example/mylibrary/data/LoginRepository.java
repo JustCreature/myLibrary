@@ -45,9 +45,19 @@ public class LoginRepository {
         // @see https://developer.android.com/training/articles/keystore
     }
 
+    public interface LoginRepListrner {
+        void onError(String msg);
+
+        void onResponse(Result<LoggedInUser> result);
+    }
+
+    public void loginRepPost(Context postContext, String username, String password, LoginRepListrner loginRepListrner) {
+        Result<LoggedInUser> result = dataSource.login(postContext, username, password);
+    }
+
     public Result<LoggedInUser> login(Context postContext, String username, String password) {
         // handle login
-        Result<LoggedInUser> result = dataSource.login(postContext, username, password);
+
         if (result instanceof Result.Success) {
             setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
         }
