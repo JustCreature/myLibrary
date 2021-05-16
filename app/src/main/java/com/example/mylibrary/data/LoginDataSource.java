@@ -56,10 +56,6 @@ public class LoginDataSource {
                     loggedInUser[0] = new LoggedInUser(userId, userInfo);
                 }
             });
-            int i = 0;
-            while (loggedInUser[0] == null) {
-                i++;
-            }
 
 
 
