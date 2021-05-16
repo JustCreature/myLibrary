@@ -31,39 +31,17 @@ public class LoginDataSource {
 
     LoggedInUser loggedInUser;
 
-    public Result<LoggedInUser> login(Context postContext, String username, String password) {
+    public LoginDataSource() {
+    }
 
-        LoginPOST loginPOST = new LoginPOST(postContext);
-        String response;
+    public LoggedInUser getLoggedInUser() {
+        return loggedInUser;
+    }
 
+    public Result<LoggedInUser> login(String userId, String userInfo) {
 
         try {
-            // TODO: handle loggedInUser authentication
-
-            loginPOST.loginPOST(username, password,
-                    new LoginPOST.VolleyResponseListener() {
-                @Override
-                public void OnError(String message) {
-                    try {
-                        throw new Throwable(message);
-                    } catch (Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void OnResponse(String userId, String userInfo) {
-                    Toast.makeText(postContext, "Success " + userInfo, Toast.LENGTH_SHORT).show();
-                    setUser(userId, userInfo);
-                }
-            });
-//            int i = 0;
-//            while (loggedInUser[0] == null) {
-//                i++;
-//            }
-
-
-
+            loggedInUser = new LoggedInUser(userId, userInfo);
             return new Result.Success<>(loggedInUser);
         } catch (Exception e) {
             return new Result.Error(new IOException("Error logging in", e));

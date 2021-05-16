@@ -5,12 +5,19 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Patterns;
+import android.widget.Toast;
 
+import com.example.mylibrary.MainActivity;
+import com.example.mylibrary.data.LoginDataSource;
 import com.example.mylibrary.data.LoginRepository;
 import com.example.mylibrary.data.Result;
 import com.example.mylibrary.data.model.LoggedInUser;
 import com.example.mylibrary.R;
+import com.example.mylibrary.registration.LoginPOST;
+
+import java.io.IOException;
 
 public class LoginViewModel extends ViewModel {
 
@@ -30,14 +37,49 @@ public class LoginViewModel extends ViewModel {
         return loginResult;
     }
 
-    public void login(Context postContext, String username, String password) {
+    public void loginRequest(Context postContext, String username, String password) {
+        LoginPOST loginPOST = new LoginPOST(postContext);
+        LoginDataSource loginDataSource = new LoginDataSource();
+
+        String response;
+
+
+        try {
+            // TODO: handle loggedInUser authentication
+
+            loginPOST.loginPOST(username, password,
+                    new LoginPOST.VolleyResponseListener() {
+                        @Override
+                        public void OnError(String message) {
+                            try {
+                                throw new Throwable(message);
+                            } catch (Throwable throwable) {
+                                throwable.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void OnResponse(String userId, String userInfo) {
+                            Toast.makeText(postContext, "Success " + userInfo, Toast.LENGTH_SHORT).show();
+                            loginDataSource.setUser(userId, userInfo);
+                            login(postContext, userId, userInfo);
+                        }
+                    });
+
+
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void login(Context context, String userId, String userInfo) {
         // can be launched in a separate asynchronous job
-        Result<LoggedInUser> result = loginRepository.login(postContext, username, password);
+        Result<LoggedInUser> result = loginRepository.login(userId, userInfo);
 
         if (result instanceof Result.Success) {
             LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
             System.out.println("AAAAAAAAAAAAA " + data);
-//            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
+            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
         } else {
             loginResult.setValue(new LoginResult(R.string.login_failed));
         }

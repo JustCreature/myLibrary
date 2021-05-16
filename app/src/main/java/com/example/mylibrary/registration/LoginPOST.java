@@ -51,7 +51,7 @@ public class LoginPOST {
 
                     try {
                         userId = response.get("id").toString();
-                        userInfo = response.get("firstName").toString() + response.get("lastName").toString();
+                        userInfo = response.get("firstName").toString() + " " + response.get("lastName").toString();
                         volleyResponseListener.OnResponse(userId, userInfo);
                     } catch (JSONException e) {
                         volleyResponseListener.OnError(e.toString());
